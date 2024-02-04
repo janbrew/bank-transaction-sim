@@ -12,37 +12,6 @@ import net.jsf.exceptions.InsufficientAccountBalance;
 import net.miginfocom.swing.MigLayout;
 
 
-class RoundedPanel extends JPanel {
-    private int radius = 15;
-    private Color backgroundColor = null;
-
-    public RoundedPanel(LayoutManager layoutManager, Color backgroundColor) {
-        super(layoutManager);
-
-        this.backgroundColor = backgroundColor;
-    }
-    
-    @Override
-    protected void paintComponent(Graphics graphics) {
-        super.paintComponents(graphics);
-        Dimension corners = new Dimension(radius, radius);
-
-        int panelWidth = getWidth();
-        int panelHeight = getHeight();
-
-        Graphics2D graphics2D = (Graphics2D) graphics;
-
-        graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        graphics2D.setColor(this.backgroundColor);
-
-        graphics2D.fillRoundRect(0, 0, panelWidth - 1, panelHeight - 1, corners.width, corners.height);
-        graphics2D.setColor(getForeground());
-        graphics2D.drawRoundRect(0, 0, panelWidth - 1, panelHeight - 1, corners.width, corners.height);
-        graphics2D.setStroke(new BasicStroke());
-    }
-}
-
 class RoundedTextField extends JTextField {
     private int radius = 15;
     private Color backgroundColor = null;
@@ -92,7 +61,7 @@ public class Visual extends JFrame {
     private JPanel screenPanel;
     private JPanel actionsPanel;
     private JPanel sidebarPanel;
-    private RoundedPanel outputPanel;
+    private JPanel outputPanel;
     private JPanel outputArea;
     private JPanel withdrawButton;
     private JPanel depositButton;
@@ -258,7 +227,7 @@ public class Visual extends JFrame {
     }
 
     private void initOutputPanel() {
-        outputPanel = new RoundedPanel(new BorderLayout(), outputPanelBackground);
+        outputPanel = new JPanel(new BorderLayout());
         outputPanel.setBackground(outputPanelBackground);
         outputArea = new JPanel(new MigLayout("wrap, align center", "", "[][]"));
         outputArea.setBackground(outputPanelBackground);
@@ -268,7 +237,6 @@ public class Visual extends JFrame {
         screenPanel.remove(loginPanel);
         screenPanel.add(outputPanel, BorderLayout.CENTER);
 
-        repaint();
         revalidate();
     }
 
@@ -339,6 +307,8 @@ public class Visual extends JFrame {
 
         outputArea.add(moneyLabel, "align center");
         outputArea.add(moneyField, "align center");
+        
+        revalidate();
     }
 
     private void initComponents() {
@@ -521,13 +491,11 @@ public class Visual extends JFrame {
             initMoneyTransactionField("Withdraw");
             currentTransaction = "W";
         }
-        
-        revalidate();
     }
 
     private void initHorizontalInteractionPanel() {
-        horizontalInteractionPanel = new RoundedPanel(new MigLayout("wrap, align 50% 50%, fill", "[]10[]10[]10[]10[]10[]", "[]10[]"), numPanelBackground);
-
+        horizontalInteractionPanel = new JPanel(new MigLayout("wrap, align 50% 50%, fill", "[]10[]10[]10[]10[]10[]", "[]10[]"));
+        horizontalInteractionPanel.setBackground(numPanelBackground);
         horizontalInteractionPanel.setPreferredSize(new Dimension(300, 200));
         
         initHorizontalNumButton("1");
