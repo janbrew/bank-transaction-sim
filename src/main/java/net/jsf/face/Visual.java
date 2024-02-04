@@ -548,6 +548,24 @@ public class Visual extends JFrame {
 
         if (label.getText().equalsIgnoreCase("Entr")) {
             if (!moneyField.getText().isEmpty()) {
+                if (moneyField.getText().startsWith("0")) {
+                    new Thread(() -> {
+                        moneyField.setText("Enter an amount starting from $ 1");
+                        
+                        try {
+                            Thread.sleep(2000);
+                        }
+                        catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
+
+                        moneyField.setText("");
+                    }).start();
+
+                    return;
+                }
+
+            
                 long amount = 0;
 
                 outputPanel.remove(horizontalInteractionPanel);
