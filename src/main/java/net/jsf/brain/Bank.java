@@ -29,7 +29,7 @@ public class Bank {
         ArrayList<Long> account = accessAccount();
 
         if (cashAmount > 10000) {
-            throw new DepositLimitReached("The max amount to deposit is $ 10,0000", null);
+            throw new DepositLimitReached("The max amount to deposit is $ 100,000", null);
         }
         else {
             account.set(1, account.get(1) + cashAmount);
